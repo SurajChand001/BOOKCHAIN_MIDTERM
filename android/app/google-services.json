@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "943838058241",
+    "firebase_url": "https://bookchain-90530.firebaseio.com",
+    "project_id": "bookchain-90530",
+    "storage_bucket": "bookchain-90530.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:943838058241:android:15cfe2673ea289e6d2ad00",
+        "android_client_info": {
+          "package_name": "com.example.bookchain"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "943838058241-vhad0mfd4f0v73c5qmn1hp066lk4btgu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBICUjHAZt7bCxKAWnmn03gBHHJQvsTxzU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "943838058241-vhad0mfd4f0v73c5qmn1hp066lk4btgu.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
