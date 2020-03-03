@@ -1,8 +1,10 @@
 import 'package:bookchain/loginsignup/login.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:curved_navigation_bar/curved_navigation_bar.dart';
+import 'newsfeed.dart';
+import 'post.dart';
+import 'review.dart';
+// ignore: camel_case_types
 class home extends StatefulWidget {
   @override
   _homeState createState() => _homeState();
@@ -10,6 +12,31 @@ class home extends StatefulWidget {
 
 // ignore: camel_case_types
 class _homeState extends State<home> {
+
+
+  final List<Widget> pages = [
+    FirstPage(),
+    SecondPage(),
+    ThirdPage(),
+  ];
+  final PageStorageBucket bucket = PageStorageBucket();
+  int _selectedIndex = 0;
+
+
+  Widget _bottomNavigationBar(int selectedIndex) => BottomNavigationBar(
+    onTap: (int index) => setState(() => _selectedIndex = index),
+    currentIndex: selectedIndex,
+    items: const <BottomNavigationBarItem>[
+      BottomNavigationBarItem(
+          icon: Icon(Icons.home), title: Text('Home')),
+      BottomNavigationBarItem(
+          icon: Icon(Icons.add_box), title: Text('Add Post')),
+      BottomNavigationBarItem(
+        icon: Icon(Icons.receipt),title: Text("Review"),
+      )
+    ],
+  );
+
 
   @override
   Widget build(BuildContext context) {
@@ -65,18 +92,11 @@ class _homeState extends State<home> {
           ],
         ),
       ),
-      bottomNavigationBar: CurvedNavigationBar(
-        height: 60,
-       color: Colors.blue,
-        backgroundColor: Colors.white,
-        items: <Widget>[
-          Icon(Icons.home, size:25,color: Colors.white,),
-          Icon(Icons.dashboard, size: 25,color: Colors.white,),
-          Icon(Icons.rate_review, size: 25,color: Colors.white,),
-        ],
-        onTap: (index) {
-        },
+      body: PageStorage(
+        child: pages[_selectedIndex],
+        bucket: bucket,
       ),
+      bottomNavigationBar: _bottomNavigationBar(_selectedIndex),
     );
   }
   void signout() {
@@ -86,5 +106,7 @@ class _homeState extends State<home> {
       MaterialPageRoute(builder: (context) =>new login()),
     );
   }
+
+
 }
 

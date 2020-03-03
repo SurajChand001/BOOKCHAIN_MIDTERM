@@ -173,7 +173,6 @@ class _signupState extends State<signup> {
              context,
              MaterialPageRoute (builder: (context) =>verified(_useremail)),
            );
-
       } catch (e) {
         setState(() {
           _error = e.message;
