@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter/widgets.dart';
@@ -48,15 +49,16 @@ class _SecondPageState extends State<SecondPage> {
          children: <Widget>[
            Container(
             child: StreamBuilder(
+
               stream: Firestore.instance.collection('USERS').snapshots(),
               builder: (context,snapshot){
                if(!snapshot.hasData)
                  {
-                   return Text("Loading");
+                   return Text("Loading...");
                  }
                   return Container( child:Column(
                   children: <Widget>[
-                  Text("Welcome ${snapshot.data.documents[1]['Name']}")
+                  Text("Welcome ${snapshot.data.documents[0]['Name']}")
                 ],
                 )
                   );
@@ -83,6 +85,11 @@ class _SecondPageState extends State<SecondPage> {
               Container(
                 padding: EdgeInsets.only(top: 15,bottom: 15,right: 2),
                 child: RaisedButton(
+                  padding: EdgeInsets.all(15),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: new BorderRadius.circular(25),
+                    side: BorderSide(color: Colors.blue),
+                  ),
                   color: Colors.blueAccent,
                   child: Text(
                     "Take Photo",
@@ -98,6 +105,11 @@ class _SecondPageState extends State<SecondPage> {
                Container(
                  padding: EdgeInsets.only(top: 15,bottom: 15,left: 2),
                  child: RaisedButton(
+                   padding: EdgeInsets.all(15),
+                   shape: RoundedRectangleBorder(
+                     borderRadius: new BorderRadius.circular(25),
+                     side: BorderSide(color: Colors.blue),
+                   ),
                    color: Colors.blueAccent,
                    child: Text(
                      "Browse Photo",
@@ -118,15 +130,26 @@ class _SecondPageState extends State<SecondPage> {
             height: 10,
           ),
           Container(
-            child: _image==null? Container():Image.file(_image,height: 300,width: 350,),
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: Colors.blueAccent,
+            ),
+            child: _image==null? Container():Image.file(_image,height: 250,width: 250,),
           ),
+           SizedBox(height: 15,),
            Container(
              child: RaisedButton(
+               padding: EdgeInsets.all(15),
+              shape: RoundedRectangleBorder(
+                  borderRadius: new BorderRadius.circular(25),
+                  side: BorderSide(color: Colors.blue),
+                 ),
                  color: Colors.blueAccent,
                  child: Text(
                    "Post",
                    style: TextStyle(
                      color: Colors.white,
+                     fontSize: 15,
                    ),
                  ),
                  onPressed: () {
