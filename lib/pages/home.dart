@@ -6,13 +6,13 @@ import 'post.dart';
 import 'review.dart';
 // ignore: camel_case_types
 class home extends StatefulWidget {
+
   @override
   _homeState createState() => _homeState();
 }
 
 // ignore: camel_case_types
 class _homeState extends State<home> {
-
 
   final List<Widget> pages = [
     FirstPage(),
@@ -45,7 +45,7 @@ class _homeState extends State<home> {
         preferredSize: Size.fromHeight(65.0),
         child:AppBar(
          title: Text(
-            "Home"
+            "BookChain"
         ),
       ),
       ),

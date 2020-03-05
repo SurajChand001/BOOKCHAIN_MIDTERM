@@ -6,6 +6,7 @@ import '../loginsignup/signup.dart';
 
 // ignore: camel_case_types
 class login extends StatefulWidget {
+  login();
   @override
   _loginState createState() => _loginState();
 }
@@ -196,7 +197,7 @@ class _loginState extends State<login> {
         if (user.isEmailVerified) {
           Navigator.push (
             context,
-            MaterialPageRoute (builder: (context) => home ()),
+            MaterialPageRoute (builder: (context) => home()),
           );
         }
         else {

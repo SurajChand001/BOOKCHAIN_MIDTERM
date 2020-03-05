@@ -7,6 +7,7 @@ import 'pages/home.dart';
 void main()=>runApp(myapp());
 // ignore: camel_case_types
 class myapp extends StatefulWidget {
+  myapp();
   @override
   _myappState createState() => _myappState();
 }

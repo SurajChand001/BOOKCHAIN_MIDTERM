@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter/widgets.dart';
@@ -10,28 +11,34 @@ class SecondPage extends StatefulWidget {
 
 class _SecondPageState extends State<SecondPage> {
   File _image;
-  List<File> list ;
+  String name;
   String bookName,description;
+  final db = Firestore.instance;
 
 
   // ignore: non_constant_identifier_names
-  Future Upload() async {
-  StorageReference reference = await FirebaseStorage().ref().child(bookName.toString());
-   reference.putFile (_image);
+  Future Upload() async{
+    final StorageReference firebaseStorageRef =
+    FirebaseStorage.instance.ref().child(bookName);
+    final StorageUploadTask task =
+    firebaseStorageRef.child(bookName).putFile(_image);
+    print('File Uploaded');
   }
-  Future getImage(bool isCamera) async { 
+  Future getImage(bool isCamera) async {
   File image;
    if(isCamera)
      {
        image = await ImagePicker.pickImage(source: ImageSource.camera);
      }
    else
-       image = await ImagePicker.pickImage(source: ImageSource.gallery);
-
+     {
+       image =  await ImagePicker.pickImage(source: ImageSource.gallery);
+     }
     setState(() {
       _image = image;
     });
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,29 +47,34 @@ class _SecondPageState extends State<SecondPage> {
        child: Column(
          children: <Widget>[
            Container(
+            child: StreamBuilder(
+              stream: Firestore.instance.collection('USERS').snapshots(),
+              builder: (context,snapshot){
+               if(!snapshot.hasData)
+                 {
+                   return Text("Loading");
+                 }
+                  return Container( child:Column(
+                  children: <Widget>[
+                  Text("Welcome ${snapshot.data.documents[1]['Name']}")
+                ],
+                )
+                  );
+
+              },
+            ),
+           ),
+           Container(
              padding: EdgeInsets.all(15.0),
              child: TextFormField(
                decoration: InputDecoration(
                  border: OutlineInputBorder(),
                  hintText: "Name of the Book",
                ),
-               onSaved: (text){
-                 bookName = text;
-               },
-             ),
-           ),
-           Container(
-             padding: EdgeInsets.all(15.0),
-             child: TextField(
-               minLines: 5,
-               maxLines: 10,
-               decoration: InputDecoration(
-                 border: OutlineInputBorder(),
-                 hintText: "Book Description",
-               ),
                onChanged: (text){
-                 description = text;
+                bookName = text;
                },
+
              ),
            ),
            Row(
@@ -93,7 +105,6 @@ class _SecondPageState extends State<SecondPage> {
                        color: Colors.white,
                      ),
                    ),
-
                    onPressed: (){
                      getImage(false);
                    },
@@ -119,9 +130,24 @@ class _SecondPageState extends State<SecondPage> {
                    ),
                  ),
                  onPressed: () {
-                   Upload ();
-
+                  if(_image!=null)
+                    {
+                      Upload();
+                      SnackBar mybar = SnackBar(
+                        content: Text("Uploaded"),
+                      );
+                      Scaffold.of(context).showSnackBar(mybar);
+                    }
+                  else{
+                    SnackBar mybar = SnackBar(
+                      content: Text(
+                        "Image not selected"
+                      ),
+                    );
+                    Scaffold.of(context).showSnackBar(mybar);
+                  }
                  }
+
              ),
            ),
          ],
@@ -130,5 +156,4 @@ class _SecondPageState extends State<SecondPage> {
     ),
     );
   }
-
 }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'login.dart';
 import 'verify.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 // ignore: camel_case_types
 class signup extends StatefulWidget {
   @override
@@ -10,8 +11,12 @@ class signup extends StatefulWidget {
 
 // ignore: camel_case_types
 class _signupState extends State<signup> {
-  String _useremail,_password,_error;
+  String _useremail,_password,_error,_username;
   final _formkey = GlobalKey<FormState>();
+  final db = Firestore.instance;
+
+  String UserID;
+
   @override
   Widget build(BuildContext context) {
     return  Scaffold(
@@ -51,6 +56,7 @@ class _signupState extends State<signup> {
                     hintText: "Enter you name",
                 ),
                 onSaved: (name){
+                  _username= name;
                 },
                 // ignore: missing_return
                 validator: (name)
@@ -168,11 +174,15 @@ class _signupState extends State<signup> {
       formState.save();
       try{
         final FirebaseUser user = (await FirebaseAuth.instance.createUserWithEmailAndPassword(email: _useremail, password: _password)).user;
+
+        DocumentReference reference = await db.collection("USERS").add({'Name':'$_username','Email':'$_useremail'});
+        print(reference.documentID);
         user.sendEmailVerification();
+
         Navigator.pushReplacement(
-             context,
-             MaterialPageRoute (builder: (context) =>verified(_useremail)),
-           );
+          context,
+          MaterialPageRoute (builder: (context) =>verified(_useremail)),
+        );
       } catch (e) {
         setState(() {
           _error = e.message;
