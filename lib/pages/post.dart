@@ -15,15 +15,16 @@ class _SecondPageState extends State<SecondPage> {
   String name;
   String bookName,description;
   final db = Firestore.instance;
-  int index = 0;
 
   // ignore: non_constant_identifier_names
   Future Upload() async{
-    final StorageReference firebaseStorageRef =
-    FirebaseStorage.instance.ref().child("BOOKS");
-    final StorageUploadTask task =
-    firebaseStorageRef.child(bookName).putFile(_image);
-    index++;
+    // ignore: non_constant_identifier_names
+    final StorageReference StorageRef = FirebaseStorage.instance.ref().child("BOOKS");
+    final StorageUploadTask task = StorageRef.child(bookName).putFile(_image);
+    StorageTaskSnapshot downloadUrl = (await task.onComplete);
+    String _url = (await downloadUrl.ref.getDownloadURL());
+    DocumentReference reference = await db.collection("IMAGE_URL").add({'Url_$bookName':'$_url'});
+
     print('File Uploaded');
   }
   Future getImage(bool isCamera) async {
